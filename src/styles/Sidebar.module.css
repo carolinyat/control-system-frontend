@@ -1,31 +1,64 @@
 .sidebar {
   width: 220px;
   height: 100vh;
-  background-color: var(--secondary);
-  color: white;
+  background: var(--secondary);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
+  flex-shrink: 0;
 }
 
-.sidebar h2 {
-  font-size: 18px;
-  margin-bottom: 30px;
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  /* margin-bottom: 0.5rem; */
+  text-align: center;
 }
 
-.sidebar ul {
+.subtitle {
+  font-size: 0.7rem;
+  color: #aaa;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 10px 0 20px;
+}
+
+ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar li {
-  margin: 15px 0;
-}
-
-.sidebar a {
-  color: white;
+.link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-decoration: none;
+  color: #ddd;
   font-weight: 500;
+  padding: 12px 14px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
 }
 
-.sidebar a:hover {
-  color: var(--primary);
+.link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.icon {
+  font-size: 18px;
+}
+
+/* Ativo */
+.active {
+  background: var(--primary);
+  color: white !important;
+  font-weight: 600;
 }

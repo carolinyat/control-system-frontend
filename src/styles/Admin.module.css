@@ -1,0 +1,223 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--background);
+    align-items: stretch;
+    /* garante altura cheia pros filhos */
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+    /* evita “quebrar” por overflow */
+    padding: 2rem;
+    background: var(--background);
+    overflow: auto;
+}
+
+.title {
+    color: var(--secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* actions */
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.searchInput {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--gray-light);
+    border-radius: 6px;
+}
+
+.searchBtn {
+    background: var(--secondary);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.addBtn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.addBtn:hover {
+    background: #42a5f5;
+}
+
+/* table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+}
+
+.table th {
+    background: var(--gray-light);
+    text-align: left;
+    padding: 12px;
+}
+
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.actionsCol {
+    display: flex;
+    gap: 8px;
+}
+
+.editBtn,
+.deleteBtn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.5s;
+}
+
+.editBtn {
+    color: var(--primary);
+}
+
+.deleteBtn {
+    color: red;
+}
+
+.modalActions .deleteBtn {
+    color: rgb(216, 14, 14);
+    background: rgba(255, 0, 0, 0.356);
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.modalActions .deleteBtn:hover {
+    background: rgba(202, 12, 12, 0.233);
+}
+
+/* Overlay do modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Caixa do modal */
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.modal input {
+    padding: 8px;
+    border: 1px solid var(--gray-light);
+    border-radius: 6px;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Notificação animada */
+.notification {
+    position: fixed;
+    bottom: -100px;
+    /* começa fora da tela */
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1100;
+
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideIn 0.4s forwards, slideOut 0.4s forwards 2.6s;
+}
+
+/* Animação de entrada */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        bottom: -100px;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        bottom: 20px;
+    }
+}
+
+/* Animação de saída */
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        bottom: 20px;
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+        bottom: -100px;
+    }
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+}

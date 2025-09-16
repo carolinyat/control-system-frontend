@@ -1,6 +1,6 @@
 .sidebar {
   width: 220px;
-  height: 100vh;
+  height: auto;
   background: var(--secondary);
   color: #fff;
   display: flex;
@@ -61,4 +61,27 @@ ul {
   background: var(--primary);
   color: white !important;
   font-weight: 600;
+}
+
+.nav {
+  flex: 1;
+}
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  color: #ddd;
+  font-weight: 500;
+  padding: 12px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
 }

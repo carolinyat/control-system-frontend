@@ -177,27 +177,58 @@ export default function Admin() {
               }
             />
             <input
-              type="email"
+              type="text"
               placeholder="E-mail"
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value;
+                setFormData({ ...formData, email: value });
+              }}
+              onBlur={(e) => {
+                const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (e.target.value && !regex.test(e.target.value)) {
+                  alert("Digite um e-mail válido!");
+                  setFormData({ ...formData, email: "" }); // limpa o campo
+                }
+              }}
             />
             <input
               type="text"
               placeholder="CPF"
               value={formData.cpf}
-              onChange={(e) =>
-                setFormData({ ...formData, cpf: e.target.value })
-              }
+              onChange={(e) => {
+                let v = e.target.value.replace(/\D/g, ""); // só números
+                if (v.length > 11) v = v.slice(0, 11); // garante no máximo 11 dígitos
+
+                // aplica máscara só quando tiver números suficientes
+                if (v.length > 9) {
+                  v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                } else if (v.length > 6) {
+                  v = v.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+                } else if (v.length > 3) {
+                  v = v.replace(/(\d{3})(\d+)/, "$1.$2");
+                }
+
+                setFormData({ ...formData, cpf: v });
+              }}
+              onBlur={(e) => {
+                const rawCpf = e.target.value.replace(/\D/g, ""); // só números
+                if (rawCpf.length !== 11) {
+                  alert("Digite um CPF válido com 11 dígitos.");
+                  setFormData({ ...formData, cpf: "" }); // limpa se inválido
+                }
+              }}
+              maxLength={14} // 000.000.000-00
+              required
             />
+
             <input
               type="date"
               value={formData.dob}
               onChange={(e) =>
                 setFormData({ ...formData, dob: e.target.value })
               }
+              max={new Date().toISOString().split("T")[0]} // impede datas futuras
             />
 
             <div className={styles.modalActions}>

@@ -20,7 +20,7 @@ export default function Sidebar() {
         <ul>
           <li>
             <NavLink
-              to="/admin/home"
+              to="/dashboard"
               className={({ isActive }) =>
                 isActive ? `${styles.link} ${styles.active}` : styles.link
               }

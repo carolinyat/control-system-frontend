@@ -1,69 +1,82 @@
-# React + TypeScript + Vite
+# 🎙️ Pro-Nuncia – Ferramenta de Análise de Pronúncia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📋 Índice
 
-Currently, two official plugins are available:
+- [✨ Funcionalidades](#-funcionalidades)
+- [🚀 Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [📋 Pré-requisitos](#-pré-requisitos)
+- [🔧 Como Executar o Projeto](#-como-executar-o-projeto)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## ✨ Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🔐 **Autenticação de Usuários**: Login individual para cada usuário (administrador ou comum).
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- 🔑 **Recuperação de Senha**: Opção para redefinir senha via e-mail.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- 📊 **Dashboard Administrativo**: Administradores podem listar, cadastrar, editar e redefinir senha de usuários por empresa.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 👥 **Gerenciamento de Usuários**: CRUD de usuários restrito a administradores.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- 🎮 **Treino Gamificado**: Usuários têm acesso a um “jogo de pronúncia”, semelhante ao Duolingo, com pontuação e níveis de dificuldade.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 🗣️ **Análise de Pronúncia com IA**: Avaliação automática da pronúncia do usuário.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 📈 **Evolução**: Visualização do progresso do usuário ao longo do tempo.
+
+- 📑 **Relatórios**: Geração de relatórios com desempenho e exportação em PDF.
+
+- 👤 **Perfil do Usuário**: Área para visualizar e atualizar informações pessoais.
+
+---
+
+## 🚀 Tecnologias Utilizadas
+
+O projeto foi desenvolvido utilizando as seguintes tecnologias:
+
+| Ferramenta | Descrição |
+| :--- | :--- |
+| **React** | Biblioteca principal para a construção da interface. |
+| **Vite** | Ferramenta de build rápida e moderna para o frontend. |
+| **TypeScript** | Superset do JavaScript que adiciona tipagem estática. |
+| **React Router DOM** | Para gerenciamento de rotas e navegação entre páginas. |
+| **React Icons** | Biblioteca com uma vasta gama de ícones populares. |
+| **CSS Modules** | Estilização modular e organizada dos componentes. |
+
+---
+
+## 📋 Pré-requisitos
+
+- [**Node.js**](https://nodejs.org/) (versão 20 ou superior)
+- [**Git**](https://git-scm.com/) (para clonar o repositório)
+
+---
+
+## 🔧 Como Executar o Projeto
+
+Siga os passos abaixo para rodar o Tasknado em seu ambiente local:
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/carolinyat/control-system-frontend](https://github.com/carolinyat/control-system-frontend)
+    ```
+
+2.  **Acesse a pasta do projeto:**
+    ```bash
+    cd control-system-frontend
+    ```
+
+3.  **Instale as dependências:**
+    *Este comando instalará todas as dependências listadas no `package.json`.*
+    ```bash
+    npm install
+    ```
+
+4.  **Inicie o servidor de desenvolvimento:**
+    ```bash
+    npm run dev
+    ```
+
+5.  **Acesse a aplicação:**
+    *Abra seu navegador e acesse `http://localhost:5173` (ou a porta indicada no seu terminal).*

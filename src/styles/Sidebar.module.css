@@ -33,28 +33,62 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* espaçamento entre os itens */
 }
 
 .link {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  /* mais espaço entre ícone e texto */
   text-decoration: none;
   color: #ddd;
   font-weight: 500;
-  padding: 12px 14px;
-  border-radius: 6px;
-  transition: background 0.2s, color 0.2s;
+  padding: 14px 16px;
+  /* aumentei o padding interno */
+  border-radius: 8px;
+  /* cantos mais suaves */
+  font-size: 0.95rem;
+  /* levemente maior */
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 
 .link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transform: translateX(4px);
+  /* efeito sutil ao passar o mouse */
 }
 
 .icon {
-  font-size: 18px;
+  font-size: 20px;
+  /* ícones um pouco maiores */
 }
+
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  color: #ddd;
+  font-weight: 500;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  transform: translateX(4px);
+}
+
 
 /* Ativo */
 .active {
@@ -65,23 +99,4 @@ ul {
 
 .nav {
   flex: 1;
-}
-
-.logoutBtn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: none;
-  color: #ddd;
-  font-weight: 500;
-  padding: 12px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.logoutBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
 }

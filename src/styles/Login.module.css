@@ -19,10 +19,14 @@
     margin: 0;
 }
 
-.subtitle {
+.subtitle, .subtitle2 {
     font-size: 1rem;
     color: #7a7a7a;
     margin: 0 0 0;
+}
+
+.subtitle2 {
+    margin-bottom: 1.5rem;
 }
 
 .card {
@@ -88,6 +92,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
+    margin-top: 1rem;
 }
 
 .button:hover {

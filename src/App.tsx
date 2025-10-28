@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./pages/ResetPassword";
 import Pronuncia from "./pages/Pronuncia"; import Finalizacao from "./pages/Finalizacao";
 import Evolucao from "./pages/Evolucao";
+import Relatorio from "./pages/Relatorio";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/pronuncia" element={<Pronuncia />} />
         <Route path="/finalizacao" element={<Finalizacao />} />
         <Route path="/evolucao" element={<Evolucao />} />
+        <Route path="/relatorio" element={<Relatorio />} />
       </Routes>
     </Router>
   );

@@ -4,6 +4,7 @@ import MicButton from "../components/MicButton";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Pronuncia.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import ScoreBox from "../components/ScoreBox";
 
 export default function Pronuncia() {
   const {
@@ -76,13 +77,7 @@ export default function Pronuncia() {
       <Sidebar />
 
       <main className={styles.content}>
-        <div className={styles.scoreBox}>
-          <h4>Suas conquistas 🏆</h4>
-          <div className={styles.scoreInfo}>
-            <span>Nível</span>
-            <span>Pontuação</span>
-          </div>
-        </div>
+        <ScoreBox />
 
         <div className={styles.card}>
           <p className={styles.instruction}>Repita a frase abaixo:</p>

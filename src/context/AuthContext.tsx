@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 
 interface AuthContextType {
@@ -12,9 +12,9 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   token: null,
-  setUser: () => {},
-  setToken: () => {},
-  logout: () => {},
+  setUser: () => { },
+  setToken: () => { },
+  logout: () => { },
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

@@ -15,33 +15,6 @@
     padding: 2rem;
 }
 
-/* Box de pontuação */
-.scoreBox {
-    position: absolute;
-    top: 1.5rem;
-    right: 2rem;
-    background: white;
-    border-radius: 10px;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    text-align: center;
-
-}
-
-.scoreBox h4 {
-    margin-bottom: 0.5rem;
-    color: var(--secondary);
-    font-weight: 600;
-}
-
-.scoreInfo {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    font-weight: bold;
-    color: var(--primary);
-}
-
 /* Card central */
 .card {
     background: white;

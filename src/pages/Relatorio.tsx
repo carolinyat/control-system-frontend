@@ -2,6 +2,7 @@ import Sidebar from "../components/Sidebar";
 import styles from "../styles/Relatorio.module.css";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { useEffect } from "react";
 
 export default function Relatorio() {
     const data = [
@@ -13,8 +14,14 @@ export default function Relatorio() {
         { fase: "Fase 6", pontuacao: 95 },
     ];
 
+    // Calcula a média
     const media =
         data.reduce((acc, item) => acc + item.pontuacao, 0) / data.length;
+
+    // Salva a média no localStorage quando o componente renderizar
+    useEffect(() => {
+        localStorage.setItem("userAverageScore", media.toFixed(1));
+    }, [media]);
 
     const handleDownloadPDF = async () => {
         const element = document.getElementById("report-content");
@@ -25,11 +32,9 @@ export default function Relatorio() {
 
         const pdf = new jsPDF("p", "mm", "a4");
         const imgWidth = 190;
-        const pageHeight = pdf.internal.pageSize.height;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        let position = 10;
 
-        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
         pdf.save("relatorio-pronuncia.pdf");
     };
 

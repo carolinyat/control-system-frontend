@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Dashboard.module.css";
 import { FaMicrophone } from "react-icons/fa";
+import ScoreBox from "../components/ScoreBox";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -18,13 +19,7 @@ export default function Dashboard() {
 
       <main className={styles.content}>
         {/* Box de pontuação no canto direito */}
-        <div className={styles.scoreBox}>
-          <h4>Suas conquistas 🏆</h4>
-          <div className={styles.scoreInfo}>
-            <span>Nível</span>
-            <span>Pontuação</span>
-          </div>
-        </div>
+        <ScoreBox/>
 
         {/* Card principal */}
         <div className={styles.card}>

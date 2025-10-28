@@ -1,9 +1,9 @@
+import { useState, useEffect } from "react";
 import { useRecorder } from "../hooks/useRecorder";
 import MicButton from "../components/MicButton";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Pronuncia.module.css";
-import { useState } from "react";
-
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Pronuncia() {
   const {
@@ -14,20 +14,41 @@ export default function Pronuncia() {
     resetRecording,
   } = useRecorder();
 
-  const [currentSentence, setCurrentSentence] = useState(
-    "O rato roeu a roupa do rei de Roma"
-  );
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Obtém a fase atual pela URL
+  const faseAtual = Number(searchParams.get("fase")) || 1;
+
+  // Lista de frases por fase
+  const frases = [
+    "O rato roeu a roupa do rei de Roma",
+    "O sabiá sabia assobiar",
+    "A aranha arranha a jarra",
+    "Três pratos de trigo para três tigres tristes",
+    "A babá bebeu o leite do bebê",
+    "O gato bebe leite e pula o muro",
+  ];
+
+  const [currentSentence, setCurrentSentence] = useState(frases[faseAtual - 1]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+
+  // Atualiza a frase ao mudar de fase
+  useEffect(() => {
+    setCurrentSentence(frases[faseAtual - 1]);
+    resetRecording();
+    setResult(null);
+  }, [faseAtual]);
 
   const handleMicClick = async () => {
     if (isRecording) {
       stopRecording();
       setIsAnalyzing(true);
 
-      // Simulação de envio e resposta da IA
+      // Simulação de análise por IA
       setTimeout(() => {
-        const success = Math.random() > 0.3; // 70% chance de "acerto"
+        const success = Math.random() > 0.3;
         setResult(success ? "Acertou!" : "Tente novamente.");
         setIsAnalyzing(false);
       }, 2000);
@@ -38,11 +59,18 @@ export default function Pronuncia() {
     }
   };
 
+  // Muda de fase ou finaliza
   const handleNext = () => {
-    setResult(null);
-    setCurrentSentence("O sabiá sabia assobiar");
-    resetRecording();
+    const proximaFase = faseAtual + 1;
+    if (proximaFase <= frases.length) {
+      navigate(`/pronuncia?fase=${proximaFase}`);
+    } else {
+      navigate("/finalizacao"); // redireciona para a tela de parabéns
+    }
   };
+
+  const ultimaFase = faseAtual === frases.length;
+
   return (
     <div className={styles.container}>
       <Sidebar />
@@ -75,7 +103,7 @@ export default function Pronuncia() {
 
           {result && (
             <button className={styles.nextBtn} onClick={handleNext}>
-              Próxima frase ➜
+              {ultimaFase ? "Finalizar" : "Próxima fase ➜"}
             </button>
           )}
         </div>

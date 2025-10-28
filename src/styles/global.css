@@ -1,8 +1,14 @@
 :root {
     --primary: #1E88E5;
+    /* azul principal */
     --secondary: #0A233C;
+    /* azul marinho para fundo ou sidebar */
     --gray-light: #E3E6E9;
+    /* cinza claro de bordas */
     --background: #F5F7FA;
+    /* fundo geral */
+    --red: #EF4444;
+    /* erros / gravação ativa */
 }
 
 body {
@@ -17,4 +23,3 @@ body,
 #root {
     height: 100%;
 }
-

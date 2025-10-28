@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
 import ResetPassword from "./pages/ResetPassword";
+import Pronuncia from "./pages/Pronuncia";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/admin/usuarios" element={<Admin />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/pronuncia" element={<Pronuncia />} />
       </Routes>
     </Router>
   );

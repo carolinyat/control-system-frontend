@@ -4,20 +4,19 @@ import styles from "../styles/Sidebar.module.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
+  const role = localStorage.getItem("userRole") || "Cliente"; // pega do storage
 
   const handleLogout = () => {
-    // Depois limpar token/sessão do backend
+    localStorage.removeItem("userRole");
     navigate("/"); // redireciona para login
   };
 
   return (
     <aside className={styles.sidebar}>
-      {/* Logo e subtítulo */}
       <h2 className={styles.logo}>Pro-Nuncia</h2>
       <p className={styles.subtitle}>Ferramenta de análise de pronúncia</p>
       <div className={styles.separator}></div>
 
-      {/* Navegação */}
       <nav className={styles.nav}>
         <ul>
           <li>
@@ -53,16 +52,19 @@ export default function Sidebar() {
             </NavLink>
           </li>
 
-          <li>
-            <NavLink
-              to="/admin/usuarios"
-              className={({ isActive }) =>
-                isActive ? `${styles.link} ${styles.active}` : styles.link
-              }
-            >
-              <FaUsers className={styles.icon} /> Usuários
-            </NavLink>
-          </li>
+          {/* somente para Administrador */}
+          {role === "Administrador" && (
+            <li>
+              <NavLink
+                to="/admin/usuarios"
+                className={({ isActive }) =>
+                  isActive ? `${styles.link} ${styles.active}` : styles.link
+                }
+              >
+                <FaUsers className={styles.icon} /> Usuários
+              </NavLink>
+            </li>
+          )}
 
           <li>
             <NavLink
@@ -77,7 +79,6 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      {/* Botão de sair no rodapé */}
       <button className={styles.logoutBtn} onClick={handleLogout}>
         <FaSignOutAlt className={styles.icon} /> Sair
       </button>

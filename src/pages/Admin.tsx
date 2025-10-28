@@ -62,30 +62,34 @@ export default function Admin() {
       return;
     }
 
+    // Validação de CPF antes de salvar
+    const rawCpf = formData.cpf.replace(/\D/g, "");
+    if (rawCpf.length !== 11) {
+      alert("CPF inválido. Deve conter 11 dígitos numéricos.");
+      return;
+    }
+
     if (editingUser) {
-      // Atualizar
       setUsers((prev) =>
         prev.map((u) => (u.id === editingUser.id ? { ...u, ...formData } : u))
       );
       setNotification("Usuário atualizado com sucesso!");
     } else {
-      // Criar com ID único
       const newUser = {
-        id: Math.floor(Math.random() * 1000000), // evita duplicação
+        id: Math.floor(Math.random() * 1000000),
         ...formData,
       };
       setUsers((prev) => [...prev, newUser]);
       setNotification("Usuário criado com sucesso!");
     }
 
-    // só depois de atualizar lista, limpa estados
     setEditingUser(null);
     setFormData({ name: "", email: "", cpf: "", dob: "" });
     setShowModal(false);
 
-    // Notificação some sozinha
     setTimeout(() => setNotification(""), 3000);
   };
+
 
 
   // Confirmar exclusão
@@ -197,30 +201,32 @@ export default function Admin() {
               placeholder="CPF"
               value={formData.cpf}
               onChange={(e) => {
-                let v = e.target.value.replace(/\D/g, ""); // só números
-                if (v.length > 11) v = v.slice(0, 11); // garante no máximo 11 dígitos
+                let v = e.target.value.replace(/\D/g, ""); // mantém apenas números
 
-                // aplica máscara só quando tiver números suficientes
+                if (v.length > 11) v = v.slice(0, 11); // máximo de 11 dígitos
+
+                // aplica a máscara de forma progressiva
                 if (v.length > 9) {
-                  v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                  v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, "$1.$2.$3-$4");
                 } else if (v.length > 6) {
-                  v = v.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+                  v = v.replace(/(\d{3})(\d{3})(\d{0,3})/, "$1.$2.$3");
                 } else if (v.length > 3) {
-                  v = v.replace(/(\d{3})(\d+)/, "$1.$2");
+                  v = v.replace(/(\d{3})(\d{0,3})/, "$1.$2");
                 }
 
                 setFormData({ ...formData, cpf: v });
               }}
               onBlur={(e) => {
-                const rawCpf = e.target.value.replace(/\D/g, ""); // só números
+                const rawCpf = e.target.value.replace(/\D/g, "");
+
                 if (rawCpf.length !== 11) {
-                  alert("Digite um CPF válido com 11 dígitos.");
-                  setFormData({ ...formData, cpf: "" }); // limpa se inválido
+                  alert("CPF deve conter exatamente 11 dígitos numéricos.");
                 }
               }}
               maxLength={14} // 000.000.000-00
               required
             />
+
 
             <input
               type="date"

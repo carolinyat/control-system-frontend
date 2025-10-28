@@ -90,7 +90,7 @@
 
 /* Resumo */
 .summary {
-  /* background: var(--gray-light); */
+  background: var(--gray-light);
   /* padding: 1rem; */
   border-radius: 8px;
   color: var(--secondary);

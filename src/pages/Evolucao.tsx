@@ -14,12 +14,12 @@ import {
 
 export default function Evolucao() {
     const data = [
-        { fase: "Fase 1", pontuacao: 60 },
-        { fase: "Fase 2", pontuacao: 75 },
-        { fase: "Fase 3", pontuacao: 82 },
-        { fase: "Fase 4", pontuacao: 88 },
-        { fase: "Fase 5", pontuacao: 91 },
-        { fase: "Fase 6", pontuacao: 95 },
+        { fase: "Fase 1", Pontuação: 60 },
+        { fase: "Fase 2", Pontuação: 75 },
+        { fase: "Fase 3", Pontuação: 82 },
+        { fase: "Fase 4", Pontuação: 88 },
+        { fase: "Fase 5", Pontuação: 91 },
+        { fase: "Fase 6", Pontuação: 95 },
     ];
 
     const navigate = useNavigate();
@@ -59,7 +59,7 @@ export default function Evolucao() {
                                 />
                                 <Line
                                     type="monotone"
-                                    dataKey="pontuacao"
+                                    dataKey="Pontuação"
                                     stroke="var(--primary)"
                                     strokeWidth={3}
                                     dot={{ r: 5, fill: "var(--secondary)" }}

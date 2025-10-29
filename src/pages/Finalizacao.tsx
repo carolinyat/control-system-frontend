@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Finalizacao.module.css";
+import ScoreBox from "../components/ScoreBox";
 
 export default function Finalizacao() {
   const navigate = useNavigate();
@@ -14,13 +15,8 @@ export default function Finalizacao() {
       <Sidebar />
 
       <main className={styles.content}>
-        <div className={styles.scoreBox}>
-          <h4>Suas conquistas 🏆</h4>
-          <div className={styles.scoreInfo}>
-            <span>Nível</span>
-            <span>Pontuação</span>
-          </div>
-        </div>
+        {/* Box de pontuação no canto direito */}
+        <ScoreBox/>
 
         <div className={styles.card}>
           <h2>Parabéns! 🎉</h2>

@@ -1,13 +1,15 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { FaHome, FaChartLine, FaFileAlt, FaUsers, FaUser, FaSignOutAlt } from "react-icons/fa";
 import styles from "../styles/Sidebar.module.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
-  const role = localStorage.getItem("userRole") || "Cliente"; // pega do storage
+  const { isAdmin, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("userRole");
+    logout();
     navigate("/"); // redireciona para login
   };
 
@@ -53,7 +55,7 @@ export default function Sidebar() {
           </li>
 
           {/* somente para Administrador */}
-          {role === "Administrador" && (
+          {isAdmin && (
             <li>
               <NavLink
                 to="/admin/usuarios"

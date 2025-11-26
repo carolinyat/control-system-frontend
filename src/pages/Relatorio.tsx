@@ -2,26 +2,55 @@ import Sidebar from "../components/Sidebar";
 import styles from "../styles/Relatorio.module.css";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
+import { getUserProgress, UserProgress } from "../services/api";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Relatorio() {
-    const data = [
-        { fase: "Fase 1", pontuacao: 60 },
-        { fase: "Fase 2", pontuacao: 75 },
-        { fase: "Fase 3", pontuacao: 82 },
-        { fase: "Fase 4", pontuacao: 88 },
-        { fase: "Fase 5", pontuacao: 91 },
-        { fase: "Fase 6", pontuacao: 95 },
-    ];
+    const { userId } = useContext(AuthContext);
+    const [progressData, setProgressData] = useState<UserProgress[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Calcula a média
-    const media =
-        data.reduce((acc, item) => acc + item.pontuacao, 0) / data.length;
-
-    // Salva a média no localStorage quando o componente renderizar
+    // Busca os dados do progresso quando o componente carrega
     useEffect(() => {
-        localStorage.setItem("userAverageScore", media.toFixed(1));
-    }, [media]);
+        const fetchProgress = async () => {
+            if (!userId) {
+                setError("Usuário não autenticado");
+                setLoading(false);
+                return;
+            }
+
+            try {
+                setLoading(true);
+                const data = await getUserProgress(userId);
+                setProgressData(data);
+                setError(null);
+            } catch (err) {
+                console.error("Erro ao buscar progresso:", err);
+                setError("Erro ao carregar dados do progresso");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProgress();
+    }, [userId]);
+
+    // Calcula estatísticas dos dados reais
+    const stats = progressData.length > 0 ? {
+        totalSessions: progressData.length,
+        averageScore: progressData.reduce((acc, p) => acc + p.best_score, 0) / progressData.length,
+        bestScore: Math.max(...progressData.map(p => p.best_score)),
+        totalAttempts: progressData.reduce((acc, p) => acc + p.attempt_count, 0)
+    } : null;
+
+    // Salva a média no localStorage quando os dados mudarem
+    useEffect(() => {
+        if (stats) {
+            localStorage.setItem("userAverageScore", stats.averageScore.toFixed(1));
+        }
+    }, [stats]);
 
     const handleDownloadPDF = async () => {
         const element = document.getElementById("report-content");
@@ -53,35 +82,48 @@ export default function Relatorio() {
 
                 <div className={styles.card} id="report-content">
                     <h2>Relatório de Desempenho</h2>
-                    <p>Resumo das suas fases e pontuações alcançadas.</p>
+                    <p>Resumo das suas sessões e pontuações alcançadas.</p>
 
-                    <table className={styles.table}>
-                        <thead>
-                            <tr>
-                                <th>Fase</th>
-                                <th>Pontuação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((item) => (
-                                <tr key={item.fase}>
-                                    <td>{item.fase}</td>
-                                    <td>{item.pontuacao}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    {loading && <p>Carregando dados...</p>}
+                    {error && <p className={styles.error}>{error}</p>}
 
-                    <div className={styles.summary}>
-                        <p>
-                            <strong>Média geral:</strong> {media.toFixed(1)} pontos
-                        </p>
+                    {!loading && !error && progressData.length === 0 && (
+                        <p>Nenhum progresso registrado ainda. Comece a praticar!</p>
+                    )}
 
-                        {/* <p>
-              <strong>Status:</strong>{" "}
-              {media >= 80 ? "Excelente desempenho!" : "Continue praticando!"}
-            </p> */}
-                    </div>
+                    {!loading && !error && progressData.length > 0 && (
+                        <>
+                            <table className={styles.table}>
+                                <thead>
+                                    <tr>
+                                        <th>Dificuldade</th>
+                                        <th>Tentativas</th>
+                                        <th>Melhor Score</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {progressData.map((item, index) => (
+                                        <tr key={item._id || index}>
+                                            <td>{item.sentence_difficulty}</td>
+                                            <td>{item.attempt_count}</td>
+                                            <td>{item.best_score.toFixed(1)}%</td>
+                                            <td>{new Date(item.ended_at).toLocaleDateString('pt-BR')}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+
+                            {stats && (
+                                <div className={styles.summary}>
+                                    <p><strong>Total de sessões:</strong> {stats.totalSessions}</p>
+                                    <p><strong>Média geral:</strong> {stats.averageScore.toFixed(1)}%</p>
+                                    <p><strong>Melhor score:</strong> {stats.bestScore.toFixed(1)}%</p>
+                                    <p><strong>Total de tentativas:</strong> {stats.totalAttempts}</p>
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
 
                 <div className={styles.actions}>

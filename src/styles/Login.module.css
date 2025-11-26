@@ -50,6 +50,16 @@
     gap: 1rem;
 }
 
+.error {
+    background-color: #fee;
+    color: #c00;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+    border: 1px solid #fcc;
+}
+
 .input {
     padding: 12px;
     border: 1px solid var(--gray-light);

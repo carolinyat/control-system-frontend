@@ -6,12 +6,16 @@ export function useRecorder() {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Inicia a gravação
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      
+      // Tenta usar codec que gere formato mais compatível
+      const options = { mimeType: 'audio/webm;codecs=opus' };
+      const mediaRecorder = new MediaRecorder(stream, options);
       mediaRecorderRef.current = mediaRecorder;
       chunks.current = [];
 
@@ -20,13 +24,28 @@ export function useRecorder() {
       };
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks.current, { type: "audio/webm" });
+        // Tenta criar blob com tipo WAV se suportado
+        const blob = new Blob(chunks.current, { type: "audio/wav" });
         setAudioBlob(blob);
         setAudioURL(URL.createObjectURL(blob));
+        
+        // Para o stream de áudio
+        stream.getTracks().forEach(track => track.stop());
+        
+        // Limpa o timeout se existir
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
       };
 
       mediaRecorder.start();
       setIsRecording(true);
+      
+      // Para automaticamente após 10 segundos
+      timeoutRef.current = setTimeout(() => {
+        stopRecording();
+      }, 10000);
     } catch (error) {
       console.error("Erro ao acessar microfone:", error);
       alert("Não foi possível acessar o microfone. Verifique as permissões.");
@@ -40,6 +59,12 @@ export function useRecorder() {
       recorder.stop();
       setIsRecording(false);
     }
+    
+    // Limpa o timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
   };
 
   // Reinicia (limpa)
@@ -47,6 +72,12 @@ export function useRecorder() {
     setAudioBlob(null);
     setAudioURL(null);
     chunks.current = [];
+    
+    // Limpa o timeout se existir
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
   };
 
   return {

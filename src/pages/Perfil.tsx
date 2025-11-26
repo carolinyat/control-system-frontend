@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Perfil.module.css";
+import { getUserById, User } from "../services/api";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Perfil() {
+    const { userId } = useContext(AuthContext);
+    const [userData, setUserData] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
-    const [cpf] = useState("123.456.789-00");
-    const [nascimento, setBirthDate] = useState("");
-    const [role, setRole] = useState("Cliente");
-
-    // const { user } = useAuth(); // AuthContext
-    // const [role, setRole] = useState(user?.role || "Cliente");
 
     // Modal de senha
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +22,33 @@ export default function Perfil() {
     // Notificação
     const [notification, setNotification] = useState("");
     const [notificationType, setNotificationType] = useState<"success" | "error">("success");
+
+    // Busca dados do usuário ao carregar
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (!userId) {
+                setError("Usuário não autenticado");
+                setLoading(false);
+                return;
+            }
+
+            try {
+                setLoading(true);
+                const data = await getUserById(userId);
+                setUserData(data);
+                setNome(data.name);
+                setEmail(data.email);
+                setError(null);
+            } catch (err) {
+                console.error("Erro ao buscar dados do usuário:", err);
+                setError("Erro ao carregar dados do perfil");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, [userId]);
 
     const handleSalvar = () => {
         setNotification("Alterações salvas com sucesso!");
@@ -65,82 +93,61 @@ export default function Perfil() {
             <Sidebar />
 
             <main className={styles.content}>
-                {/* Select de função */}
-                <div className={styles.roleBox}>
-                    <label htmlFor="role">Função:</label>
-                    <select
-                        id="role"
-                        value={role}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            setRole(value);
-                            localStorage.setItem("userRole", value); // salva no navegador
-                        }}
-                    >
-                        <option value="Administrador">Administrador</option>
-                        <option value="Cliente">Cliente</option>
-                    </select>
-
-                </div>
-
                 <div className={styles.card}>
                     <h2>Meu Perfil</h2>
 
-                    <form className={styles.form}>
-                        <div className={styles.formGroup}>
-                            <label>Nome</label>
-                            <input
-                                type="text"
-                                value={nome}
-                                onChange={(e) => setNome(e.target.value)}
-                            />
-                        </div>
+                    {loading && <p>Carregando dados...</p>}
+                    {error && <p className={styles.error}>{error}</p>}
 
-                        <div className={styles.formGroup}>
-                            <label>E-mail</label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
+                    {!loading && !error && userData && (
+                        <form className={styles.form}>
+                            <div className={styles.formGroup}>
+                                <label>ID</label>
+                                <input
+                                    type="text"
+                                    value={userData.id}
+                                    disabled
+                                    style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
+                                />
+                            </div>
 
-                        <div className={styles.formGroup}>
-                            <label>Data de Nascimento</label>
-                            <input
-                                type="date"
-                                value={nascimento}
-                                onChange={(e) => setBirthDate(e.target.value)}
-                                max={new Date().toISOString().split("T")[0]} // impede datas futuras
-                            />
-                        </div>
+                            <div className={styles.formGroup}>
+                                <label>Nome</label>
+                                <input
+                                    type="text"
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
+                                />
+                            </div>
 
-                        <div className={styles.formGroup}>
-                            <label>CPF</label>
-                            <input type="text" value={cpf} disabled />
-                            <small>
-                                Para alterar o CPF, envie um e-mail para{" "}
-                                <a href="mailto:suporte@gmail.com">suporte@gmail.com</a>
-                            </small>
-                        </div>
-                        <div className={styles.actions}>
-                            <button
-                                type="button"
-                                className={styles.primaryBtn}
-                                onClick={handleSalvar}
-                            >
-                                Salvar Alterações
-                            </button>
+                            <div className={styles.formGroup}>
+                                <label>E-mail</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
 
-                            <button
-                                type="button"
-                                className={styles.secondaryBtn}
-                                onClick={handleAbrirModal}
-                            >
-                                Alterar Senha
-                            </button>
-                        </div>
-                    </form>
+                            <div className={styles.actions}>
+                                <button
+                                    type="button"
+                                    className={styles.primaryBtn}
+                                    onClick={handleSalvar}
+                                >
+                                    Salvar Alterações
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={styles.secondaryBtn}
+                                    onClick={handleAbrirModal}
+                                >
+                                    Alterar Senha
+                                </button>
+                            </div>
+                        </form>
+                    )}
                 </div>
 
                 {/* Modal de alteração de senha */}
